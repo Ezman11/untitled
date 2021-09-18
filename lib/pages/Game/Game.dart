@@ -15,7 +15,12 @@ class Game {
     return _totalGuesses;
   }
 
+  String getAnswer(){
+    return _answer.toString();
+  }
+
   List<int> getHistoryInput(){
+    print(_historyInput);
     return _historyInput;
   }
 
@@ -23,6 +28,7 @@ class Game {
 
   int doGuess(int num) {
     _historyInput.add(num);
+    _totalGuesses++;
     if(num > _answer) {
       return 1;
     } else if(num < _answer) {
