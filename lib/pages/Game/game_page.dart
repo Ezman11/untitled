@@ -29,8 +29,6 @@ class _GamePageState extends State<GamePage> {
     super.dispose();
   }
 
-  //Widget _buildInputPanel() {return }
-
   Widget _buildInputPanel() {
     return Container(
       child: Row(
@@ -38,10 +36,20 @@ class _GamePageState extends State<GamePage> {
         children: [
           Flexible(
             child: TextField(
+              enabled: _end ? false : true,
+              style: TextStyle(color: Colors.white),
               controller: _controller,
               keyboardType: TextInputType.number,
               cursorColor: Colors.white,
               decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
                 hintText: 'Enter the number here',
                 hintStyle: TextStyle(
                   color: Colors.white.withOpacity(0.5),
@@ -54,25 +62,50 @@ class _GamePageState extends State<GamePage> {
             ),
           ),
           TextButton(
-            onPressed: () {
-              setState(() {
-                _start = true;
-                input = _controller.text;
-                int? guess = int.tryParse(input);
-                if (guess != null) {
-                  var result = _game.doGuess(guess);
-                  if (result == 0) {
-                    _feedback = 'CORRECT';
-                    _end = true;
-                  } else if (result == 1) {
-                    _feedback = 'TOO HIGH!';
-                  } else {
-                    _feedback = 'TOO LOW!';
+            onPressed: !_end
+                ? () {
+                    setState(() {
+                      _start = true;
+                      input = _controller.text;
+                      int? guess = int.tryParse(input);
+                      if(guess != null){
+                        if (_end) {
+                          _showMaterialDialog('Game Is End!', 'please New Game');
+                        }
+                        if (guess != null) {
+                          var result = _game.doGuess(guess);
+                          if (result == 0) {
+                            _feedback = 'CORRECT';
+                            _end = true;
+                            var showHistory = '';
+
+                            for (int item in _game.getHistoryInput()) {
+                              showHistory += item.toString() + ' -> ';
+                            }
+                            showHistory =
+                                showHistory.substring(0, showHistory.length - 4);
+                            _showMaterialDialog(
+                                'GOOD JOB!',
+                                'The answer is ' +
+                                    _game.getAnswer() +
+                                    '.\n'
+                                        'You have made ' +
+                                    _game.getTotalGuesses().toString() +
+                                    ' guesses.\n\n' +
+                                    showHistory);
+                          } else if (result == 1) {
+                            _feedback = 'TOO HIGH!';
+                          } else {
+                            _feedback = 'TOO LOW!';
+                          }
+                        }
+                      }else{
+                        _showMaterialDialog('Error', 'Please Enter Only Number');
+                      }
+                      _controller.clear();
+                    });
                   }
-                }
-                _controller.clear();
-              });
-            },
+                : null,
             child: Text('GUESS'),
           ),
         ],
@@ -87,7 +120,7 @@ class _GamePageState extends State<GamePage> {
           Text(
             input,
             style:
-            GoogleFonts.mitr(fontSize: 60.0, color: Colors.white, shadows: [
+                GoogleFonts.mitr(fontSize: 60.0, color: Colors.white, shadows: [
               Shadow(
                 blurRadius: 20.0,
                 color: Colors.yellowAccent,
@@ -98,65 +131,71 @@ class _GamePageState extends State<GamePage> {
           ),
           !_end
               ? Row(
-            children: [
-              Icon(
-                Icons.close_outlined,
-                size: 30,
-                color: Colors.red,
-              ),
-              Text(
-                _feedback,
-                style: GoogleFonts.mitr(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 20.0,
-                        color: Colors.yellowAccent,
-                        offset: Offset(1.0, 1.0),
-                      ),
-                    ]),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          )
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.close_outlined,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+                    Text(
+                      _feedback,
+                      style: GoogleFonts.mitr(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 20.0,
+                              color: Colors.yellowAccent,
+                              offset: Offset(1.0, 1.0),
+                            ),
+                          ]),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                )
               : Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.done_outline,
-                    size: 30,
-                    color: Colors.green,
-                  ),
-                  Text(
-                    _feedback,
-                    style: GoogleFonts.mitr(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 20.0,
-                            color: Colors.yellowAccent,
-                            offset: Offset(1.0, 1.0),
-                          ),
-                        ]),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              SizedBox.shrink(),
-              TextButton(
-                  onPressed: () {
-                    _game = Game();
-                  },
-                  style: TextButton.styleFrom(
-                    side: BorderSide(color: Colors.white, width: 1),
-                  ),
-                  child: Text('NEW GAME'))
-            ],
-          )
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.done_outline,
+                          size: 30,
+                          color: Colors.green,
+                        ),
+                        Text(
+                          _feedback,
+                          style: GoogleFonts.mitr(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 20.0,
+                                  color: Colors.yellowAccent,
+                                  offset: Offset(1.0, 1.0),
+                                ),
+                              ]),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                    SizedBox.shrink(),
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _game = Game();
+                            _end = false;
+                            _start = false;
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                          side: BorderSide(color: Colors.white, width: 1),
+                        ),
+                        child: Text('NEW GAME'))
+                  ],
+                )
         ],
       );
     } else {
@@ -219,7 +258,7 @@ class _GamePageState extends State<GamePage> {
         Text(
           'GUESS THE NUMBER',
           style:
-          GoogleFonts.mitr(fontSize: 15.0, color: Colors.white, shadows: [
+              GoogleFonts.mitr(fontSize: 15.0, color: Colors.white, shadows: [
             Shadow(
               blurRadius: 20.0,
               color: Colors.white,
@@ -228,6 +267,28 @@ class _GamePageState extends State<GamePage> {
           ]),
         ),
       ],
+    );
+  }
+
+  void _showMaterialDialog(String title, String msg) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(msg),
+          actions: [
+            // ปุ่ม OK ใน dialog
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                // ปิด dialog
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
