@@ -205,7 +205,7 @@ class _GamePageState extends State<GamePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Im thinking of a number between 1 and 100.\n',
+                'I\'m thinking of a number between 1 and 100.\n',
                 style: GoogleFonts.mitr(
                     fontSize: 20.0,
                     color: Colors.white,
