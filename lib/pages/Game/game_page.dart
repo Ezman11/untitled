@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/pages/Game/Game.dart';
+import 'package:untitled/pages/Game/game.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  late Game _game;
+  late game _game;
   var input = '';
   final _controller = TextEditingController();
   bool _start = false;
@@ -20,7 +20,7 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    _game = Game();
+    _game = game();
   }
 
   @override
@@ -185,7 +185,7 @@ class _GamePageState extends State<GamePage> {
                     TextButton(
                         onPressed: () {
                           setState(() {
-                            _game = Game();
+                            _game = game();
                             _end = false;
                             _start = false;
                           });

@@ -1,13 +1,13 @@
 import 'dart:math';
 
-class Game {
+class game {
   final int _answer;
   int _totalGuesses = 0 ;
   List<int> _historyInput = [];
 
 
-  Game() : _answer = Random().nextInt(100) + 1 {
-    print("The answer is: $_answer");
+  game() : _answer = Random().nextInt(100) + 1 {
+    print("The answer is : $_answer");
   }
 
 
@@ -20,7 +20,7 @@ class Game {
   }
 
   List<int> getHistoryInput(){
-    print(_historyInput);
+    print("History : " + _historyInput.toString());
     return _historyInput;
   }
 
