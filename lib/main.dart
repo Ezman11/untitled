@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/pages/Game/game_page.dart';
+import 'package:untitled/pages/Login/login_page.dart';
 import 'package:untitled/pages/Thai_Font_Viewer/thai_Font_Viewer_page.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: GamePage(),
+      home: LoginPage(),
     );
   }
 }
