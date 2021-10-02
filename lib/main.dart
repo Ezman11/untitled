@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/pages/Game/game_page.dart';
-import 'package:untitled/pages/Login/login_page.dart';
-import 'package:untitled/pages/Thai_Font_Viewer/thai_Font_Viewer_page.dart';
+import 'package:untitled/pages/%20Flutter_Food/home_page.dart';
+import 'package:untitled/pages/%20Flutter_Food/login_page.dart';
+// import 'package:untitled/pages/Game/game_page.dart';
+// import 'package:untitled/pages/Login/login_page.dart';
+// import 'package:untitled/pages/Thai_Font_Viewer/thai_Font_Viewer_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,8 +17,34 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+          ),
+          headline6: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 18.0,
+          ),
+          headline4: TextStyle(
+              fontSize: 24.0,
+              color: Colors.white
+          ),
+          headline5: TextStyle(
+              fontSize: 16.0,
+              color: Colors.white
+          ),
+        ),
       ),
       home: LoginPage(),
+      routes: {
+        LoginPage.routeName : (context) => const LoginPage(),
+        HomePage.routeName : (context) => const HomePage(),
+      },
+      initialRoute: LoginPage.routeName,
     );
   }
 }
